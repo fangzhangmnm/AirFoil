@@ -13,8 +13,9 @@ public class AirFoil : MonoBehaviour
     public AnimationCurve aerodynamicCenter;
     public float chordLength = 1;
     public float sectionLength = 1;
-    public float damping = 0f;
+    public float damping = 0.1f;
     public float maxSpeed = 15f;
+    [ReadOnly, SerializeField] private float airDensity = 0;
     [ReadOnly,SerializeField] private float angleOfAttack = 0;
     [ReadOnly, SerializeField] private float planarFlowSpeed = 0;
     [ReadOnly, SerializeField] private float lift = 0;
@@ -25,7 +26,6 @@ public class AirFoil : MonoBehaviour
     {
         OnValidate();
         body = GetComponentInParent<Rigidbody>();
-        //body.maxAngularVelocity = 3;
     }
     private void OnDrawGizmosSelected()
     {
@@ -46,15 +46,18 @@ public class AirFoil : MonoBehaviour
         Vector3 localFlow = transform.InverseTransformDirection(airVelocity - foilVelocity);
         localFlow.x = 0;
         planarFlowSpeed = localFlow.magnitude;
+        float planarFlowSpeed1 = Mathf.Clamp(planarFlowSpeed, 0, maxSpeed);
         angleOfAttack = planarFlowSpeed > 0 ? -Mathf.Atan2(-localFlow.y, -localFlow.z) * Mathf.Rad2Deg : 0;
-        float airDensity = 1.225f;
-        float coeff1 = 0.5f * airDensity * planarFlowSpeed * planarFlowSpeed * chordLength*sectionLength;
-        float coeff2 = 0.5f * airDensity * Mathf.Pow(Mathf.Clamp(planarFlowSpeed,0,maxSpeed),2)  * chordLength * sectionLength;
+        airDensity = AirDensitySetting.getDensity(transform.position.y);//1.225f
+        //float coeff1 = 0.5f * airDensity * planarFlowSpeed * planarFlowSpeed * chordLength*sectionLength;
+        float coeff2 = 0.5f * airDensity * planarFlowSpeed1 * planarFlowSpeed1 * chordLength * sectionLength;
 
-        drag = dragCoefficient.Evaluate(angleOfAttack) * coeff1;
+        drag = dragCoefficient.Evaluate(angleOfAttack) * coeff2;
         lift = liftCoefficient.Evaluate(angleOfAttack) * coeff2;
         Vector3 localForce = Quaternion.Euler(angleOfAttack,0,0)*new Vector3(0, lift, -drag);
+
         force = transform.TransformDirection(localForce);
+
         force = force * (1 - damping) + oldForce * damping;
         oldForce = force;
 

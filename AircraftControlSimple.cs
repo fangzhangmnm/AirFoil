@@ -12,10 +12,15 @@ public class AircraftControlSimple : MonoBehaviour
     public float pitchSensitivity = 15f;
     public float yawSensitivity = 15f;
     public Text UIText;
+    public Transform CenterOfMass = null;
     AirFoil[] airFoils;
     private void Start()
     {
         airFoils = GetComponentsInChildren<AirFoil>();
+        if (CenterOfMass)
+        {
+            body.centerOfMass = transform.InverseTransformPoint(CenterOfMass.position);
+        }
     }
     private void FixedUpdate()
     {
@@ -32,18 +37,22 @@ public class AircraftControlSimple : MonoBehaviour
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.W))
-            thruster.value = Mathf.Clamp01(thruster.value + 0.1f);
+            thruster.throttle = Mathf.Clamp01(thruster.throttle + 0.1f);
         if (Input.GetKeyDown(KeyCode.S))
-            thruster.value = Mathf.Clamp01(thruster.value - 0.1f);
+            thruster.throttle = Mathf.Clamp01(thruster.throttle - 0.1f);
         Vector3 force = Vector3.zero;
         foreach (var f in airFoils)
             force += f.force;
         if(UIText!=null)
-            UIText.text = string.Format("Thrust: {0:P0} {1:F1}G\nSpeed: {2:F1}\nClimb Rate:{3:F1}\nAltitude:{4:F1}\nOverload:{5:F1}G",
-                thruster.value,thruster.value*thruster.maxThrust/body.mass/9.81, 
+            UIText.text = string.Format("Throttle: {0:P0} {1:F1}G\nSpeed: {2:F1}\nClimb Rate:{3:F1}\nAltitude:{4:F1}\nOverload:{5:F1}G",
+                thruster.throttle,thruster.thrust/body.mass/9.81, 
                 body.velocity.magnitude,
                 body.velocity.y,
                 body.position.y,
                 Vector3.Dot(transform.up, force) / body.mass / 9.81f);
+    }
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(transform.TransformPoint(body.centerOfMass), .01f);
     }
 }
