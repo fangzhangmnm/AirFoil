@@ -10,6 +10,11 @@ public class AirDensitySetting : MonoBehaviour
     static AirDensitySetting singleton;
     public static float getDensity(float height)
     {
+        if (!singleton)
+        {
+            var go = new GameObject("AirDensitySetting");
+            singleton=go.AddComponent<AirDensitySetting>();
+        }
         return Mathf.Min(singleton.maxDensity, singleton.seaLevelDensity * Mathf.Pow(0.5f, height / singleton.halfDensityHeight));
     }
     

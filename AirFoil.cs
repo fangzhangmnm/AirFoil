@@ -13,7 +13,7 @@ public class AirFoil : MonoBehaviour
     public AnimationCurve aerodynamicCenter;
     public float chordLength = 1;
     public float sectionLength = 1;
-    public float damping = 0.1f;
+    public float damping = 0.005f;
     public float maxSpeed = 15f;
     [ReadOnly, SerializeField] private float airDensity = 0;
     [ReadOnly,SerializeField] private float angleOfAttack = 0;
@@ -58,8 +58,8 @@ public class AirFoil : MonoBehaviour
 
         force = transform.TransformDirection(localForce);
 
-        force = force * (1 - damping) + oldForce * damping;
-        oldForce = force;
+        force = oldForce = Vector3.Lerp(oldForce, force,Time.fixedDeltaTime/(damping+Time.fixedDeltaTime));
+
 
         body.AddForceAtPosition(force, transform.position);
 

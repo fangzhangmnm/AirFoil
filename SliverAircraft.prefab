@@ -104,10 +104,11 @@ GameObject:
   - component: {fileID: 4269823556868278}
   - component: {fileID: 54084948916215358}
   - component: {fileID: 114048790318719960}
+  - component: {fileID: 960868028}
   m_Layer: 0
   m_Name: SliverAircraft
   m_TagString: Player
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 1206586993520771344, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -132,7 +133,6 @@ Transform:
   - {fileID: 4341200417125722}
   - {fileID: 6408548489453916874}
   - {fileID: 7924165683256229844}
-  - {fileID: 4862283268423426}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -164,7 +164,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 605bdd40de208c544b8d68254db98398, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  axesToCenter: 0
   LeftAileron: {fileID: 4039034938351484}
   RightAileron: {fileID: 4485504207887832}
   HorizontalAileron: {fileID: 4504285674719362}
@@ -176,89 +175,118 @@ MonoBehaviour:
   yawSensitivity: 15
   UIText: {fileID: 0}
   CenterOfMass: {fileID: 4269823556868278}
---- !u!1 &1105568823676900
-GameObject:
+  throttleInput: 0
+  rollInput: 0
+  pitchInput: 0
+  yawInput: 0
+  playerInput: 0
+--- !u!114 &960868028
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4862283268423426}
-  - component: {fileID: 20594389164672592}
-  - component: {fileID: 81266778182272690}
-  m_Layer: 0
-  m_Name: Main Camera
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &4862283268423426
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1105568823676900}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.382, z: -1.363}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 4269823556868278}
-  m_RootOrder: 10
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!20 &20594389164672592
-Camera:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1105568823676900}
+  m_GameObject: {fileID: 1088133727485312}
   m_Enabled: 1
-  serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
-  m_projectionMatrixMode: 1
-  m_GateFitMode: 2
-  m_FOVAxisMode: 0
-  m_SensorSize: {x: 36, y: 24}
-  m_LensShift: {x: 0, y: 0}
-  m_FocalLength: 50
-  m_NormalizedViewPortRect:
-    serializedVersion: 2
-    x: 0
-    y: 0
-    width: 1
-    height: 1
-  near clip plane: 0.3
-  far clip plane: 1000
-  field of view: 60
-  orthographic: 0
-  orthographic size: 5
-  m_Depth: -1
-  m_CullingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_RenderingPath: -1
-  m_TargetTexture: {fileID: 0}
-  m_TargetDisplay: 0
-  m_TargetEye: 3
-  m_HDR: 1
-  m_AllowMSAA: 1
-  m_AllowDynamicResolution: 0
-  m_ForceIntoRT: 0
-  m_OcclusionCulling: 1
-  m_StereoConvergence: 10
-  m_StereoSeparation: 0.022
---- !u!81 &81266778182272690
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1105568823676900}
-  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61854baa0d4b8fb47b86c6151530629f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 0}
+  maxRoll: 45
+  maxClimbAngle: 25
+  maxPitchUp: 25
+  maxPitchDown: 45
+  rollController:
+    KP: 5
+    KI: 1
+    KD: 0.1
+    dampP:
+      dampingTime: 0.02
+    dampIInput:
+      dampingTime: 0.02
+    diffD:
+      dampingTime: 0.02
+    maxDifferential: 10
+    maxIntegrate: 10
+    input: 0
+    differential: 0
+    integrate: 0
+    output: 0
+  pitchController:
+    KP: 3
+    KI: 1
+    KD: 0
+    dampP:
+      dampingTime: 0.02
+    dampIInput:
+      dampingTime: 0.02
+    diffD:
+      dampingTime: 0.02
+    maxDifferential: 10
+    maxIntegrate: 10
+    input: 0
+    differential: 0
+    integrate: 0
+    output: 0
+  yawController:
+    KP: 1
+    KI: 0
+    KD: 0
+    dampP:
+      dampingTime: 0.02
+    dampIInput:
+      dampingTime: 0.02
+    diffD:
+      dampingTime: 0.02
+    maxDifferential: 10
+    maxIntegrate: 10
+    input: 0
+    differential: 0
+    integrate: 0
+    output: 0
+  climbToPitchController:
+    KP: 3
+    KI: 3
+    KD: 0
+    dampP:
+      dampingTime: 0.02
+    dampIInput:
+      dampingTime: 0.02
+    diffD:
+      dampingTime: 0.02
+    maxDifferential: 10
+    maxIntegrate: 10
+    input: 0
+    differential: 0
+    integrate: 0
+    output: 0
+  yawToRollController:
+    KP: 5
+    KI: 0
+    KD: 1
+    dampP:
+      dampingTime: 0.02
+    dampIInput:
+      dampingTime: 0.02
+    diffD:
+      dampingTime: 0.02
+    maxDifferential: 10
+    maxIntegrate: 10
+    input: 0
+    differential: 0
+    integrate: 0
+    output: 0
+  targetClimbAngle: 0
+  targetYaw: 0
+  climbAngle: 0
+  yawSpeed: 0
+  targetRoll: 0
+  targetPitch: 0
+  targetYawSpeed: 0
+  targetPosition: {x: 0, y: 0, z: 0}
+  eulers: {x: 0, y: 0, z: 0}
+  output: {x: 0, y: 0, z: 0}
 --- !u!1 &1162028601175212
 GameObject:
   m_ObjectHideFlags: 0
@@ -585,7 +613,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   chordLength: 0.05
   sectionLength: 0.1
-  damping: 0.1
+  damping: 0.005
   maxSpeed: 40
   airDensity: 0
   angleOfAttack: 0
@@ -1292,7 +1320,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   chordLength: 0.1
   sectionLength: 0.2
-  damping: 0.1
+  damping: 0.005
   maxSpeed: 40
   airDensity: 0
   angleOfAttack: 0
@@ -1812,7 +1840,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   chordLength: 0.04
   sectionLength: 0.060000014
-  damping: 0.1
+  damping: 0.005
   maxSpeed: 40
   airDensity: 0
   angleOfAttack: 0
@@ -2240,7 +2268,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   chordLength: 0.1
   sectionLength: 0.1
-  damping: 0.1
+  damping: 0.005
   maxSpeed: 40
   airDensity: 0
   angleOfAttack: 0
@@ -2821,7 +2849,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   chordLength: 0.2
   sectionLength: 0.2
-  damping: 0.1
+  damping: 0.005
   maxSpeed: 40
   airDensity: 0
   angleOfAttack: 0
@@ -3155,7 +3183,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   chordLength: 0.03
   sectionLength: 0.05
-  damping: 0.1
+  damping: 0.005
   maxSpeed: 40
   airDensity: 0
   angleOfAttack: 0
@@ -3490,7 +3518,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   chordLength: 0.2
   sectionLength: 0.2
-  damping: 0.1
+  damping: 0.005
   maxSpeed: 40
   airDensity: 0
   angleOfAttack: 0
@@ -3917,7 +3945,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   chordLength: 0.05
   sectionLength: 0.1
-  damping: 0.1
+  damping: 0.005
   maxSpeed: 40
   airDensity: 0
   angleOfAttack: 0
@@ -4345,7 +4373,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   chordLength: 0.03
   sectionLength: 0.1
-  damping: 0.1
+  damping: 0.005
   maxSpeed: 40
   airDensity: 0
   angleOfAttack: 0
@@ -4679,7 +4707,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   chordLength: 0.03
   sectionLength: 0.1
-  damping: 0.1
+  damping: 0.005
   maxSpeed: 40
   airDensity: 0
   angleOfAttack: 0
